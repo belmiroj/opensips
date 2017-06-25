@@ -1,3 +1,3 @@
 # Opensips in docker
 
-Aluno do Instituto Federal de Santa Catarina, Campus São José.
+Projeto desenvolvido para Curso Superior de Tecnologia em Sistemas Telecomunicações do IFSC câmpus São José.
