@@ -1,0 +1,11 @@
+Isntalar mysql-server
+
+git clone https://github.com/OpenSIPS/opensips/scripts/mysql
+
+create database opensips;
+create user 'opensips'@'localhost' identified by 'opensips';
+grant all on opensips.* to 'opensips';
+
+mysql -u opensips --password=opensips -h localhost -e 'source /tmp/opensips/database/mysql/standard-create.sql' opensips
+
+for i in *; do mysql -u opensips --password=opensips -h localhost -e "source /tmp/opensips/database/mysql/$i" opensips ;done
