@@ -1,6 +1,10 @@
-Isntalar mysql-server
+Instalar mysql-server
 
-git clone https://github.com/OpenSIPS/opensips/scripts/mysql
+cd /tmp/
+
+git clone https://github.com/OpenSIPS/opensips.git
+
+Acessar mysql e criar database e usuário opensips
 
 create database opensips;
 create user 'opensips'@'localhost' identified by 'opensips';
