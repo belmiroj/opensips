@@ -1,5 +1,14 @@
 Instalar mysql-server
 
+# Alterar senha usuário root
+/usr/bin/mysqladmin -u root password 'SUASENHA'
+
+# deletar usuarios anonimos e alterar senha do root
+mysql -p
+delete from mysql.user where not (host="localhost" and user="root");
+grant all privileges on *.* to root identified by 'a1t1crm';
+FLUSH PRIVILEGES;
+
 cd /tmp/
 
 git clone https://github.com/OpenSIPS/opensips.git
