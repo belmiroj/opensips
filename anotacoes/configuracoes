@@ -1,0 +1,45 @@
+   docker run --rm \
+   -p 5060:5060/tcp \
+   -p 5060:5060/udp \
+   -v /tmp/opensips/opensips.cfg:/usr/local/etc/opensips/opensips.cfg \
+   -v /tmp/opensips/ldap.cfg:/usr/local/etc/opensips/ldap.cfg \
+   belmiroj/opensips:v0.2
+   
+ 
+cachedb_couchbase cachedb_memcached cachedb_mongodb
+   
+   
+update subscriber
+set ha1 = md5(concat(username, ':', domain, ':', password)),
+ha1b = md5(concat(username, '@', domain, ':', domain, ':', password))
+
+docker run --rm    
+-p 5060:5060/tcp    
+-p 5060:5060/udp    
+-v /tmp/opensips/opensips.cfg:/usr/local/etc/opensips/opensips.cfg    
+-v /tmp/opensips/ldap.cfg:/usr/local/etc/opensips/ldap.cfg    
+belmiroj/opensips:v0.3
+
+ldapsearch -d "dc=cefetsc,dc=edu,dc=br" -D "uid=belmiro.j"
+ldapsearch -d "dc=alunos,dc=edu,dc=br" -D "uid=belmiro.j"
+
+
+ldapsearch -x -LLL -b cn=Manager,dc=belmiro,dc=com
+
+
+3.83 To URI Username
+
+$tU - reference to username in URI of 'To' header
+
+
+
+criar arquivo mudanca e depois executar o comando abaixo
+
+Exemplo mudanca.ldif
+
+dn: cn=Belmiro Junior,ou=Users,dc=belmiro,dc=com
+changetype: modify
+add: telephoneNumber
+telephoneNumber: 4832987512
+
+ldapmodify -x -D "cn=Manager,dc=belmiro,dc=com" -W -f /tmp/mudanca.ldif
