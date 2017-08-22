@@ -1,0 +1,74 @@
+[root@docker ~]# slappasswd 
+New password: 
+Re-enter new password: 
+{SSHA}/
+
+Adicionar no arquivo /etc/openldap/slapd.d/cn=config/olcDatabase\=\{2\}bdb.ldif
+
+olcRootPW: {SSHA}/
+
+Alterado parametro dc
+
+olcSuffix: dc=belmiro,dc=com
+...
+olcRootDN: cn=Manager,dc=belmiro,dc=com
+...
+olcRootPW: {SSHA}
+
+
+Alterar no arquivo /etc/openldap/slapd.d/cn=config/olcDatabase={1}monitor.ldif
+
+dn.base="cn=Manager,dc=belmiro,dc=com"
+
+[root@docker cn=config]# slappasswd 
+New password: 
+Re-enter new password: 
+{SSHA}
+
+
+Adicionar ao arquivo /etc/openldap/slapd.d/cn=config/olcDatabase\=\{2\}bdb.ldif
+
+olcAccess: {0}to attrs=userPassword by self write by dn.base="cn=Manager,dc=belmiro,dc=com" write by anonymous auth by * none
+olcAccess: {1}to * by dn.base="cn=Manager,dc=belmiro,dc=com" write by self write by * read
+
+
+[root]# chkconfig slapd on
+[root]# service slapd start
+
+[root]# cd /tmp
+[root]# nano belmiro.ldif
+
+dn: dc=belmiro,dc=com
+objectClass: dcObject
+objectClass: organization
+dc: belmiro
+o : belmiro
+
+[root]# ldapadd -f belmiro.ldif -D cn=Manager,dc=belmiro,dc=com -w belmiro
+[root]# ldapsearch -x -LLL -b dc=belmiro,dc=com
+
+nano /etc/sysconfig/iptables
+-A INPUT -p tcp --dport 389 -j ACCEPT
+
+[root]# cd /tmp
+[root]# nano users.ldif
+
+dn: ou=Users,dc=belmiro,dc=com
+objectClass: organizationalUnit
+ou: Users
+
+[root]# ldapadd -f users.ldif -D cn=Manager,dc=belmiro,dc=com -w belmiro
+[root]# ldapsearch -x -LLL -b dc=belmiro,dc=com
+
+
+[root]# cd /tmp
+[root]# nano belmiroj.ldif
+
+dn: cn=Belmiro Junior,ou=Users,dc=belmiro,dc=com
+cn: Belmiro Junior
+sn: Junior
+objectClass: inetOrgPerson
+userPassword: 
+uid: belmiroj
+
+[root]# ldapadd -f belmiroj.ldif -D cn=Manager,dc=belmiro,dc=com -w belmiro
