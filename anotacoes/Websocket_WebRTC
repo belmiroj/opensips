@@ -1,0 +1,28 @@
+docker login
+docker build -t belmiroj/opensips:v0.4 .
+docker push belmiroj/opensips:v0.4
+
+
+Criar a chave e certificado
+
+mkdir /tmp/ssl/certs /tmp/ssl/privates -p
+cd /tmp/ssl/
+openssl genrsa -out opensips.key 1024
+openssl req -new -key opensips.key -x509 -out opensips.crt -days 999
+cat opensips.key opensips.crt > opensips.pem
+cp opensips.crt certs/
+cp opensips.key privates/
+
+
+docker run --rm \
+   -p 5060:5060/tcp \
+   -p 5060:5060/udp \
+   -p 8080:8080 \
+   -v /tmp/opensips/opensips.cfg:/usr/local/etc/opensips/opensips.cfg \
+   -v /tmp/opensips/ldap.cfg:/usr/local/etc/opensips/ldap.cfg \
+   -v /tmp/ssl/opensips.pem:/tmp/opensips.pem \
+   -v /tmp/ssl/opensips.key:/tmp/opensips.key \
+   -v /tmp/ssl/opensips.crt:/tmp/opensips.crt \
+   -v /tmp/ssl/opensips.csr:/tmp/opensips.csr \
+   -v /tmp/ssl/certs:/tmp/certs \
+   belmiroj/opensips:v0.4
